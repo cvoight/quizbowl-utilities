@@ -42,18 +42,6 @@ const setSettings = (o) => (scriptProperties().setProperties(o), o);
 /**
  *
  */
-// const getDocs = () => {
-//   const urls = SpreadsheetApp.getActiveSpreadsheet()
-//     .getRangeByName("links")
-//     .getValues()
-//     .flat();
-//   return urls
-//     .filter((e) => e.length !== 0)
-//     .map((e) => ({
-//       id: e.match(/\/document\/d\/([a-zA-Z0-9-_]+)/)[1],
-//       name: DocumentApp.openByUrl(e).getName(),
-//     }));
-// };
 function getDocs() {
   const links = SpreadsheetApp.getActiveSpreadsheet()
     .getRangeByName("links")
@@ -82,11 +70,6 @@ function retrieveDb() {
   }
   // The Quizbowl Pronouncing Dictionary is licensed under the
   // Open Database License (ODbL).
-  // const database =
-  //   SpreadsheetApp.openById("1B96WA4fiMgRjiyy7wmuGZD291C6Yxz-wecCrHUkwa-E")
-  //     .getSheetByName("pgs")
-  //     .getDataRange()
-  //     .getValues();
   const values = SpreadsheetApp.openById(
     "id"
   )
