@@ -14,11 +14,6 @@ const include = (fn) => HtmlService.createHtmlOutputFromFile(fn).getContent();
 /**
  *
  */
-function fontList() {
-  const response = UrlFetchApp.fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBcPy5nPys7OFf2sktjs1e7lEDlCPOxVjY");
-  const o = JSON.parse(response.getContentText());
-  return o.items.map(e => e.family);
-}
 const scriptProperties = () => PropertiesService.getScriptProperties();
 const defaultSettings = {
   font: "Source Sans Pro",
