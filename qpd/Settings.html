@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include("SettingsStylesheet"); ?>
+  </head>
+  <body>
+    <form aria-labelledby="text">
+      <fieldset>
+        <legend id="text">Text</legend>
+        <label for="font">Font family</label>
+        <input type="text" id="font" name="font">
+        <label for="color">Foreground color</label>
+        <input type="text" id="color" name="color">
+        <input type="submit" id="st" value="Save">
+      </fieldset>
+    </form>
+    <form aria-labelledby="guides">
+      <fieldset>
+        <legend id="guides">Guides</legend>
+        <button type="button" id="concatenate" name="concatenate" role="switch">
+          <span>on</span>
+          <span>off</span>
+        </button>
+        <label for="concatenate" class="tooltip" aria-description="Distinct pronunciation guides from the QPD will be returned, separated by vertical bars.">Concatenate distinct entries?</label>
+        <input type="submit" id="sg" value="Save">
+      </fieldset>
+    </form>
+    <?!= include("SettingsJavaScript"); ?>
+  </body>
+</html>

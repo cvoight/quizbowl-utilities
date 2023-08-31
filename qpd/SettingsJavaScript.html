@@ -1,0 +1,49 @@
+<script>
+  function propagateSettings(o) {
+    for (const k in o) {
+      const element = document.querySelector(`#${k}`);
+      element.value = o[k];
+      if (k === "concatenate") element.setAttribute("aria-checked", o[k]);
+    }
+    const forms = document.querySelectorAll("form");
+    for (const form of forms) {
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        let f = event.target;
+        if (f.getAttribute("aria-labelledby") === "guides") {
+          f = event.target.cloneNode(true);
+          f.innerHTML = f.innerHTML.replaceAll("button", "input");
+        }
+        google.script.run.withSuccessHandler(alertSuccess).setSettings(f);
+      });
+    }
+  }
+  function alertSuccess(o) {
+    const input = Object.keys(o).includes("concatenate")
+      ? document.querySelector("#sg")
+      : document.querySelector("#st");
+    input.blur();
+    input.className = "success";
+    input.value = "Saved";
+    input.addEventListener("animationend", (event) => {
+      event.target.className = "";
+      event.target.value = "Save";
+    });
+  }
+  window.onload = () => {
+    const switches = document.querySelectorAll("[role='switch']");
+    for (const s of switches) {
+      s.addEventListener("click", (event) => {
+        const element = event.target;
+        if (element.getAttribute('aria-checked') === 'true') {
+          element.setAttribute('aria-checked', 'false');
+          element.value = false;
+        } else {
+          element.setAttribute('aria-checked', 'true');
+          element.value = true;
+        }
+      }, false);
+    }
+    google.script.run.withSuccessHandler(propagateSettings).getSettings();
+  };
+</script>

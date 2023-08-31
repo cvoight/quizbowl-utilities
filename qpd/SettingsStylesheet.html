@@ -1,0 +1,122 @@
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Slab:wght@400;600&display=swap");
+  body {
+    font: 400 100%/1.2 "Roboto", sans-serif;
+    max-width: 32em;
+    margin: auto;
+  }
+  fieldset {
+    border-radius: 8px;
+    margin-bottom: 1em;
+  }
+  legend {
+    font: 400 125%/1.0 "Roboto", sans-serif;
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+  label {
+    display: block;
+    margin-bottom: 4px;
+  }
+  input {
+    display: block;
+    border-radius: 4px;
+    border: 1px solid hsl(0, 0%, 66%);
+    margin-bottom: 1rem;
+    height: 2rem;
+    padding: 0 0.5rem;
+    font: inherit;
+  }
+  input[type="color"] {
+    border: none;
+    background: none;
+    padding: 0;
+  }
+  input[type="submit"] {
+    margin-top: 1rem;
+    border-radius: 2px;
+    margin-bottom: 0.5rem;
+    border: none rgba(0, 0, 0, 0);
+    padding: 0 0;
+    width: 96px;
+    text-align: center;
+    vertical-align: center;
+  }
+  /* from https://github.com/pure-css/pure/blob/master/src/buttons/css/buttons.css */
+  input[type="submit"]:hover, 
+  input[type="submit"]:focus {
+    background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
+  }
+  input[type="submit"]:active {
+    box-shadow: 0 0 0 1px rgba(0,0,0, 0.15) inset, 0 0 6px rgba(0,0,0, 0.20) inset;
+    border-color: #000;
+  }
+  input[type="submit"].success {
+    animation: success 1.618s;
+  }
+  @keyframes success {
+    0%, 100% { background-color: #a7f3d0; }
+  }
+  button[role="switch"] {
+    font: 400 75%/1.0 "Roboto", sans-serif;
+    padding: 0;
+    margin: 0;
+    width: max-content;
+    height: auto;
+    border-radius: 2px;
+    border: 1px solid hsl(0, 0%, 66%);
+    display: inline-flex;
+    justify-content: space-around;
+    align-items: center;
+
+  }
+  button[role="switch"] span {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    pointer-events: none;
+  }
+  [role="switch"][aria-checked="false"] :last-child,
+  [role="switch"][aria-checked="true"] :first-child {
+    background: #3a80e9;
+    color: #ffffff;
+  }
+  button[role="switch"] + label {
+    display: inline;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  /* https://blog.logrocket.com/creating-beautiful-tooltips-with-only-css/ */  
+  .tooltip {
+    position: relative;
+  }
+  .tooltip:before {
+    content: attr(aria-description);
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, -100%);
+    left: 50%;
+    margin-top: -15px;
+    width: 160px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #000;
+    color: #fff;
+    text-align: left;
+    opacity: 0;
+    transition: 0.3s opacity;
+  }
+  .tooltip:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+    border: 7.5px solid #000;
+    border-color: black transparent transparent transparent;
+    opacity: 0;
+    transition: 0.3s;
+  }
+  .tooltip:hover:before, .tooltip:hover:after {
+    opacity: 1;
+  }
+</style>

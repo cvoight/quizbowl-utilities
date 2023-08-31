@@ -1,0 +1,181 @@
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Slab:wght@400;600&display=swap");
+  body {
+    font: 400 100%/1.2 "Roboto Slab", serif;
+  }
+  strong {
+    font-weight: 600;
+  }
+  mark {
+    font: 600 "Roboto", sans-serif;
+    color: gray;
+    background-color: transparent;
+  }
+  [hidden] {
+    display: none !important;
+  }
+  *:focus {
+    outline: 0;
+  }
+  .tablist {
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    max-height: 56px;
+    /*overflow-x: hidden;*/
+    margin: 0 0 8px 0;
+    width: 100%;
+  }
+  .tablist > button {
+    font: 400 100%/1.0 "Roboto", sans-serif;
+    padding: 8px 8px;
+    /*flex-shrink: 0;*/
+    cursor: pointer;
+    border: none;
+    border-bottom: 1px solid gray;
+    color: inherit;
+    background-color: transparent;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .tablist > button#docs,
+  .tablist > button[aria-selected="true"] {
+    flex-shrink: 0;
+    width: max-content;
+  }
+  .tablist > button[aria-selected="true"] {
+    border-bottom: 3px solid #0038a8;
+  }
+  .tabpanel {
+    display: block;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-height: 598px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #dadce0 white;
+  }
+  @supports (-moz-appearance:none) {
+    .tabpanel {
+      max-height: 533px;
+    }
+  }
+  .tabpanel > p {
+    padding: 8px 16px;
+    flex-shrink: 0;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: opacity 0.618s;
+  }
+  .tabpanel > p:hover {
+    background-color: rgba(0, 56, 168, 0.1);
+  }
+  .tabpanel > p:first-child {
+    margin: 0;
+  }
+  .tabpanel > p + p {
+    margin: 0.25em 0 0 0;
+  }
+  .alert {
+    z-index: 999;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    height: 32px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transform: translate(-50%, -60px);
+  }
+  .alert.success {
+    background-color: #a7f3d0;
+    animation: fade 2s linear;
+  }
+  .alert.failure {
+    background-color: #fecaca;
+    animation: fade 10s linear;
+  }
+  @keyframes fade {
+    0%,25% {opacity:  1}
+    100% {opacity:  0}
+  }
+  /* from Google Workspace CSS */
+  ::-webkit-scrollbar {
+    height: 0;
+    overflow: visible;
+    width: 12px;
+  }
+  ::-webkit-scrollbar-button {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    background-color: #dadce0;
+    border: solid transparent;
+    border-width: 1px 1px 1px 1px;
+    box-shadow: none;
+    min-height: 28px;
+    border-radius: 8px;
+    padding: 100px 0 0;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25)
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.35)
+  }
+  /* from https://loading.io/css/ */
+  .lds-ring,
+  .lds-ring div {
+    box-sizing: border-box;
+  }
+  .lds-ring {
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+     
+    transform: translate(-40px, -84px);
+  }
+  .lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border: 8px solid #0038a8;
+    border-radius: 50%;
+    animation: lds-ring 1.236s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #0038a8 transparent transparent transparent;
+  }
+  .lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes lds-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>

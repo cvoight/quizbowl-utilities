@@ -1,0 +1,150 @@
+<script>
+  const hide = e => { e.hidden = true };
+  const show = e => { e.hidden = false };
+  const hideLoading = () => { hide(document.querySelector(".lds-ring")) };
+  const showLoading = () => { show(document.querySelector(".lds-ring")) };
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
+  function escapeRegExp (s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+  /*
+   *
+   */
+  function displayDocs(arr) {
+    const docs = `
+        <div class="tabpanel" role="tabpanel" tabindex="0" id="docs-tab"
+          aria-labelledby="docs">
+          ${arr
+            .map((e) => `<p tabindex="0" data-url="${e.url}">${e.name}</p>`)
+            .join("")}
+        </div>
+      `;
+    hideLoading();
+    document.querySelector("div.tabs").insertAdjacentHTML("beforeend", docs);
+    addPGhook();
+  }
+  function addPGhook() {
+    const ps = document.querySelectorAll("div#docs-tab > p");
+    for (const p of ps) {
+      p.addEventListener("click", () => {
+        hide(document.querySelector("div#docs-tab"));
+        showLoading();
+        const bs = document.querySelectorAll("div.tablist > button.tab");
+        for (const b of bs) {
+          b.setAttribute("aria-selected", "false");
+          b.setAttribute("tabindex", "-1");
+        }
+        const url = p.getAttribute("data-url");
+        const idx = url.split("/").indexOf("d");
+        const id = url.split("/")[idx + 1];
+        const tab = document.querySelector(`#id${id}`);
+        if (tab) {
+          tab.setAttribute("aria-selected", "true");
+          tab.textContent = tab.textContent.replace(/ \([0-9]*\)/g, "");
+          tab.parentNode.insertBefore(tab, null);
+        } else {
+          document.querySelector("div.tablist").insertAdjacentHTML(
+            "beforeend", `
+              <button class="tab" role="tab" aria-selected="true" id="id${id}"
+                aria-controls="id${id}-tab">
+                ${p.textContent}
+              </button>
+            `
+          );
+        }
+        google.script.run.withSuccessHandler(displayPGs).getPGs(id);
+      });
+    }
+  }
+  /*
+   *
+   */
+  function stylePG(s, k, pg) {
+    const re = new RegExp(`(?<=\\W|^)${escapeRegExp(k)}(?=\\W|$)`);
+    return s.replace(re, `<strong>$&</strong> <mark>(“${pg}”)</mark>`);
+  }
+  function displayPGs(arr) {
+    const tablist = document.querySelector("div.tablist");
+    const tab = tablist.lastElementChild;
+    const choices = `
+        <div class="tabpanel" role="tabpanel" tabindex="0" id="${tab.id}-tab"
+          aria-labelledby="${tab.id}">
+          ${arr
+            .map(
+              (e) => `
+            <p tabindex="0" data-keyword="${e.keyword}" data-pg="${e.pg}">
+              ${stylePG(e.sentence, e.keyword, e.pg)}
+            </p>`
+            )
+            .join("")}
+        </div>
+      `;
+    hideLoading();
+    document.querySelector("div.tabs").insertAdjacentHTML("beforeend", choices);
+    const c = document.querySelector(`#${tab.id}-tab`).childElementCount;
+    tab.textContent = `${tab.textContent} (${c})`;
+    waiaria();
+    selectPGhook(tab.id);
+  }
+  function selectPGhook(id) {
+    const parent = document.querySelector(`#${id}-tab`);
+    for (const e of parent.children) {
+      e.addEventListener("click", () => {
+        const pg = e.getAttribute("data-pg");
+        const s = e.innerText.match(
+          `[^\n\r\f]{0,10}${escapeRegExp(e.getAttribute("data-keyword"))}`
+        );
+        e.style.opacity = 0;
+        google.script.run
+          .withSuccessHandler(insertPGsuccess)
+          .withFailureHandler(insertPGfailure)
+          .insertPGs(id.replace("id", ""), s, pg);
+      });
+      e.addEventListener("mousedown", (event) => {
+        if (event.button === 1) event.preventDefault();
+      });
+      e.addEventListener("contextmenu", (event) => event.preventDefault());
+      e.addEventListener("auxclick", (event) => {
+        event.preventDefault();
+        if (event.button === 1) {
+          navigator.clipboard.writeText(`(${e.getAttribute("data-pg")})`);
+        }
+        if (event.button === 2) e.style.opacity = 0;
+      });
+      e.addEventListener("transitionend", () => {
+        e.remove();
+        const tablist = document.querySelector(`#${id}`);
+        tablist.textContent = tablist.textContent.replace(
+          /\([0-9]*\)/g,
+          `(${parent.childElementCount})`
+        );
+      });
+    }
+  }
+  function insertPGsuccess(obj) {
+    const alert = `
+        <div class="alert ${obj.index ? "success" : "failure"}"
+          role="alert" id="insertion-message">
+          ${
+            obj.index
+              ? `<p><mark>(${obj.pg})</mark> placed</p>`
+              : `<p>Something went wrong placing <mark>(${obj.pg})</mark>.</p>`
+          }
+        </div>
+      `;
+    document.querySelector("body").insertAdjacentHTML("beforeend", alert);
+    for (const e of document.querySelectorAll(".alert")) {
+      e.addEventListener("animationend", () => e.remove());
+    }
+  }
+  function insertPGfailure() {
+    window.alert("Unknown failure :(");
+  }
+  /*
+   *
+   */
+  window.onload = (event) => {
+    waiaria();
+    google.script.run.withSuccessHandler(displayDocs).getDocs();
+  };
+</script>
