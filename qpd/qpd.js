@@ -19,7 +19,7 @@ function fontList() {
   const o = JSON.parse(response.getContentText());
   return o.items.map(e => e.family);
 }
-const userProperties = () => PropertiesService.getUserProperties();
+const scriptProperties = () => PropertiesService.getScriptProperties();
 const defaultSettings = {
   font: "Source Sans Pro",
   color: "#777777",
@@ -27,18 +27,18 @@ const defaultSettings = {
 };
 class Settings {
   constructor() {
-    const userSettings = userProperties().getProperties();
-    Object.assign(this, defaultSettings, userSettings);
+    const scriptSettings = scriptProperties().getProperties();
+    Object.assign(this, defaultSettings, scriptSettings);
     return new Proxy(this, {
       get(target, key) {
-        return userProperties().getProperty(key) ?? defaultSettings[key];
+        return scriptProperties().getProperty(key) ?? defaultSettings[key];
       },
     });
   }
 }
-const userOptions = new Settings();
-const getSettings = () => userOptions;
-const setSettings = (o) => (userProperties().setProperties(o), o);
+const scriptOptions = new Settings();
+const getSettings = () => scriptOptions;
+const setSettings = (o) => (scriptProperties().setProperties(o), o);
 /**
  *
  */
@@ -88,7 +88,7 @@ function retrieveDb() {
   //     .getDataRange()
   //     .getValues();
   const values = SpreadsheetApp.openById(
-    "1W-iksD86--98TkMt0Df42Pj26l9pvyWxX_FXOpVkxkU"
+    "id"
   )
     .getRange("pgs!A3:B14581")
     .getValues();
@@ -154,7 +154,7 @@ function getPGs(id) {
       )
     );
     const pg =
-      userOptions.concatenate === "true"
+      scriptOptions.concatenate === "true"
         ? Array.from(pgs.get(k)).join("|")
         : Array.from(pgs.get(k))[0];
     return match
@@ -185,8 +185,8 @@ function insertPGs(id, s, pg) {
   const endIdx = idx + pgformed.length - 1;
   text.insertText(idx, pgformed);
   function Style() {
-    this[DocumentApp.Attribute.FONT_FAMILY] = userOptions.font;
-    this[DocumentApp.Attribute.FOREGROUND_COLOR] = userOptions.color;
+    this[DocumentApp.Attribute.FONT_FAMILY] = scriptOptions.font;
+    this[DocumentApp.Attribute.FOREGROUND_COLOR] = scriptOptions.color;
     this[DocumentApp.Attribute.BOLD] = false;
     this[DocumentApp.Attribute.ITALIC] = false;
     this[DocumentApp.Attribute.UNDERLINE] = false;
